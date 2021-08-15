@@ -1,0 +1,22 @@
+{
+  "name": "book",
+  "version": "1.0.0",
+  "description": "mantap",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemon app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afrizafarhan/book.git"
+  },
+  "author": "farhan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/afrizafarhan/book/issues"
+  },
+  "homepage": "https://github.com/afrizafarhan/book#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
