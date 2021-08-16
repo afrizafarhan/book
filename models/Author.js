@@ -1,8 +1,11 @@
 const {Con} = require('../core/connection')
 const tableName = 'author'
 
+
 const getListAuthors = () => {
-    return Con.query(`SELECT * FROM ${tableName}`).then(res => res.rows).catch(e => e.stack)
+    return Con.query(`SELECT * FROM ${tableName}`).then((results) => {
+        return results.rows
+    }).catch(e => e.stack)
 }
 
 const getDetailAuthor = (data) => {
@@ -16,11 +19,20 @@ const addAuthor = (data) => {
     .then(res => res.rowCount > 0 ? {status: 200} :{status: 404})
 }
 
-const updateAuthor = (data) = {
-
+const updateAuthor = (data) => {
+    return true;
 }
 
 const deleteAuthor = (data) => {
     const {id} = data.body
     return Con.query(`DELETE FROM ${tableName} WHERE id = $1`,[id]).then(res => res.rowCount > 0 ? {status: 200}: {status : 404})
+}
+
+
+module.exports = {
+    getListAuthors,
+    getDetailAuthor,
+    addAuthor,
+    updateAuthor,
+    deleteAuthor
 }
