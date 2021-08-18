@@ -35,7 +35,7 @@ const deleteLangguage = (data) => {
     const {id} = data
     return Con
     .query(`DELETE FROM ${tableName} WHERE id = $1`, [id])
-    .then(res => res.rowCount > 0 ? {msg: 'SUCCESS_DELETE_LANGgUAGE'} : {msg: 'FAILED_DELETE_LANGgUAGE'})
+    .then(res => res.rowCount > 0 ? {msg: 'SUCCESS_DELETE_LANGGUAGE'} : {msg: 'FAILED_DELETE_LANGGUAGE'})
 }
 
 module.exports = {
