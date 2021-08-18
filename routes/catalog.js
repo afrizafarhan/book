@@ -1,31 +1,41 @@
-const { router } = require("../core/module");
+const { router, upload, multer } = require("../core/module");
+
+//create storage configuration for multer
+const diskStorage = multer.diskStorage({
+    destination: (req, file, fn) => {
+        fn(null, path.join(__dirname, "/uploads"))
+    },
+    filename: (req, file, fn) => {
+        fn(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    }
+})
 
 const authorController = require('../controllers/AuthorController')
 const langguagesController = require('../controllers/LangguageController')
 const publisherController = require('../controllers/publisherController')
 
-router.get('/',(req, res) => res.send('Welcome'))
+router.get('/', (req, res) => res.send('Welcome'))
 
 /// AUTHOR ROUTES ///
 
-router.post('/author', authorController.addAuthor)
-router.post('/detailauthor', authorController.detailAuthor)
-router.put('/authorupdate', authorController.updateAuthor)
-router.put('/author', authorController.updateStatusAuthor)
+router.post('/author', upload.none(), authorController.addAuthor)
+router.post('/detailauthor', upload.none(), authorController.detailAuthor)
+router.put('/authorupdate', upload.none(), authorController.updateAuthor)
+router.put('/author', upload.none(), authorController.updateStatusAuthor)
 router.get('/authors', authorController.authorsList)
 
 /// LANGUAGE ROUTES ///
-router.post('/langguage', langguagesController.addLangguage)
-router.post('/detaillangguage', langguagesController.detailLangguage)
-router.put('/langguage', langguagesController.updateLangguage)
-router.delete('/langguage', langguagesController.deleteLangguage)
+router.post('/langguage', upload.none(), langguagesController.addLangguage)
+router.post('/detaillangguage', upload.none(), langguagesController.detailLangguage)
+router.put('/langguage', upload.none(), langguagesController.updateLangguage)
+router.delete('/langguage', upload.none(), langguagesController.deleteLangguage)
 router.get('/langguages', langguagesController.langgugesList)
 
 /// PUBLISHER ROUTES ///
-router.post('/publisher', publisherController.addPublisher)
-router.post('/detail-publisher', publisherController.getDetailPublisher)
-router.put('/publisher', publisherController.updatePublisher)
-router.delete('/publisher', publisherController.deletePublisher)
+router.post('/publisher', upload.none(), publisherController.addPublisher)
+router.post('/detail-publisher', upload.none(), publisherController.getDetailPublisher)
+router.put('/publisher', upload.none(), publisherController.updatePublisher)
+router.delete('/publisher', upload.none(), publisherController.deletePublisher)
 router.get('/publishers', publisherController.getListPublishers)
 
 module.exports = router
