@@ -1,4 +1,4 @@
-const {env} = require('./module')
+const { env } = require('./module')
 const Pool = require('pg').Pool
 
 const Con = new Pool({
@@ -10,4 +10,4 @@ const Con = new Pool({
 })
 
 
-module.exports = {Con}
+module.exports = { Con }

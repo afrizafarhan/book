@@ -1,4 +1,4 @@
-const { app, express} = require('./core/module')
+const { app, express } = require('./core/module')
 //routes
 const catalogRouter = require('./routes/catalog')
 
