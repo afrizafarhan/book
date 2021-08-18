@@ -13,13 +13,19 @@ const getDetailPublisher = (data) => {
     const {id} = data
     return Con
     .query(`SELECT * FROM ${tableName} WHERE id = $1`, [id])
-    .then(res => res.rows)
+    .then(res => {
+        console.log(res)
+        if(res.rowCount > 0)
+            return res.rows
+        else
+            return {msg: 'NOT_FOUND'}
+    })
     .catch(e => e.stack)
 }
 const addPublisher = async(data) => {
     const {name, email, address, fax, num_phone} = data
     const error = []
-    const checkEmail = await checkEmailIfExist(email)
+    const checkEmail = await checkEmailIfExist(email, tableName)
     const checkName = await checkNameIfExist(name)
     if(checkEmail) error.push('EMAIL_ALREADY_USE')
     if(checkName) error.push('NAME_ALREADY_USE')
@@ -34,9 +40,7 @@ const addPublisher = async(data) => {
 const updatePublisher = async(data) => {
     const {name, address, fax, num_phone} = data
     const error = []
-    const checkEmail = await checkEmailIfExist(email)
     const checkName = await checkNameIfExist(name)
-    if(checkEmail) error.push('EMAIL_ALREADY_USE')
     if(checkName) error.push('NAME_ALREADY_USE')
 
     if(error.length > 0) return {msg: error}
@@ -46,16 +50,33 @@ const updatePublisher = async(data) => {
     .then(res => res.rowCount > 0 ? {msg: 'SUCCESS_UPDATE_PUBLISHER'} : {msg: 'FAILED_UPDATE_PUBLISHER'})
     .catch(e => e.stack)
 }
-const deletePublisher = (data) => {
+const deletePublisher = async(data) => {
     const {id} = data
-    return Con
-    .query(`DELETE FROM ${tableName} WHERE id = $1`,[id])
-    .then(res => res.rowCount > 0 ? {msg: 'SUCCESS_DELETE_PUBLISHER'} : {msg: 'FAILED_DELETE_PUBLISHER'})
+    const checkIfDataExist = await Con.query(`SELECT * FROM ${tableName} WHERE id = $1`, [id])
+    .then(res => res.rowCount)
+    .catch(e => e.stack)
+
+    console.log(checkIfDataExist)
+    if(checkIfDataExist > 0)
+        return Con
+            .query(`DELETE FROM ${tableName} WHERE id = $1`,[id])
+            .then(res => res.rowCount > 0 ? {msg: 'SUCCESS_DELETE_PUBLISHER'} : {msg: 'FAILED_DELETE_PUBLISHER'})
+            .catch(e => e.stack)
+    else
+        return {msg: 'DATA_NOT_FOUND'}
 }
 
 const checkNameIfExist = (name) => {
     return Con
-    .query(`SELECT name FROM ${tableName} WHERE name LIKE '$1%'`, [name])
+    .query(`SELECT name FROM ${tableName} WHERE name LIKE '${name}%'`)
     .then(res => res.rowCount > 0 ? true : false)
     .catch(e => e.stack)
+}
+
+module.exports = {
+    getListPublishers,
+    getDetailPublisher,
+    addPublisher,
+    updatePublisher,
+    deletePublisher
 }

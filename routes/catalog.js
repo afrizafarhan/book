@@ -2,6 +2,7 @@ const { router } = require("../core/module");
 
 const authorController = require('../controllers/AuthorController')
 const langguagesController = require('../controllers/LangguageController')
+const publisherController = require('../controllers/publisherController')
 
 router.get('/',(req, res) => res.send('Welcome'))
 
@@ -21,5 +22,10 @@ router.delete('/langguage', langguagesController.deleteLangguage)
 router.get('/langguages', langguagesController.langgugesList)
 
 /// PUBLISHER ROUTES ///
+router.post('/publisher', publisherController.addPublisher)
+router.post('/detail-publisher', publisherController.getDetailPublisher)
+router.put('/publisher', publisherController.updatePublisher)
+router.delete('/publisher', publisherController.deletePublisher)
+router.get('/publishers', publisherController.getListPublishers)
 
 module.exports = router
