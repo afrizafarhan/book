@@ -12,7 +12,8 @@ const diskStorage = multer.diskStorage({
 
 const authorController = require('../controllers/AuthorController')
 const langguagesController = require('../controllers/LangguageController')
-const publisherController = require('../controllers/publisherController')
+const publisherController = require('../controllers/PublisherController')
+const bookController = require('../controllers/BookController')
 
 router.get('/', (req, res) => res.send('Welcome'))
 
@@ -37,5 +38,8 @@ router.post('/detail-publisher', upload.none(), publisherController.getDetailPub
 router.put('/publisher', upload.none(), publisherController.updatePublisher)
 router.delete('/publisher', upload.none(), publisherController.deletePublisher)
 router.get('/publishers', publisherController.getListPublishers)
+
+/// BOOKS ROUTES ///
+router.get('/books', bookController.listBooks)
 
 module.exports = router
