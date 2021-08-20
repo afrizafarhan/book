@@ -1,6 +1,9 @@
-const { app, express } = require('./core/module')
+const { app, express,fs } = require('./core/module')
 //routes
 const catalogRouter = require('./routes/catalog')
+
+const path = "./uploads"
+if(!fs.existsSync(path)) fs.mkdirSync('uploads')
 
 app.use('/', catalogRouter)
 
