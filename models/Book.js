@@ -16,12 +16,13 @@ const getDetailBooks = (data) => {
     return Con.query(query, [id]).then(res => res.rows).catch(e => e.stack)
 }
 
-const addBooks = (data) => {
-   const {book_title, id_langguge, id_author, id_publisher, total_page, release_date, price, book_img} = data.body
+const addBook = (data) => {
+   const {book_title, id_langguage, id_author, id_publisher, total_page, release_date, price, book_img} = data
    const query = `INSERT INTO ${tableName}(book_title, id_langguage, id_author, id_publisher, total_page, release_date, price, book_img) VALUES($1, $2, $3, $4, $5, $6, $7, $8)`
-   return Con.query(query, [book_title, id_langguge, id_author, id_publisher, total_page, release_date, price, book_img]).then(res => res.rowCount > 0 ? {msg: 'SUCCESS_ADD_BOOK'} : {msg: 'FAILED_ADD_BOOK'}).catch(e => e.stack)  
+   return Con.query(query, [book_title, id_langguage, id_author, id_publisher, total_page, release_date, price, book_img]).then(res => res.rowCount > 0 ? {msg: 'SUCCESS_ADD_BOOK'} : {msg: 'FAILED_ADD_BOOK'}).catch(e => e.stack)  
 }
 
 module.exports = {
-    getListBooks
+    getListBooks,
+    addBook
 }

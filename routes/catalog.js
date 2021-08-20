@@ -1,15 +1,5 @@
 const { router, upload, multer } = require("../core/module");
 
-//create storage configuration for multer
-const diskStorage = multer.diskStorage({
-    destination: (req, file, fn) => {
-        fn(null, path.join(__dirname, "/uploads"))
-    },
-    filename: (req, file, fn) => {
-        fn(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-    }
-})
-
 const authorController = require('../controllers/AuthorController')
 const langguagesController = require('../controllers/LangguageController')
 const publisherController = require('../controllers/PublisherController')
@@ -40,6 +30,7 @@ router.delete('/publisher', upload.none(), publisherController.deletePublisher)
 router.get('/publishers', publisherController.getListPublishers)
 
 /// BOOKS ROUTES ///
+router.post('/book', upload.single("book_img"), bookController.addBook)
 router.get('/books', bookController.listBooks)
 
 module.exports = router
