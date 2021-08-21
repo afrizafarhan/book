@@ -20,5 +20,6 @@ const getTypeOfImage = (name) => {
 module.exports = {
     multer,
     diskStorage,
-    getTypeOfImage
+    getTypeOfImage,
+    rootFolder
 }

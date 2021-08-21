@@ -6,7 +6,6 @@ const publisherController = require('../controllers/PublisherController')
 const bookController = require('../controllers/BookController')
 
 router.get('/', (req, res) => res.send('Welcome'))
-
 /// AUTHOR ROUTES ///
 
 router.post('/author', upload.none(), authorController.addAuthor)
@@ -32,5 +31,10 @@ router.get('/publishers', publisherController.getListPublishers)
 /// BOOKS ROUTES ///
 router.post('/book', upload.single("book_img"), bookController.addBook)
 router.get('/books', bookController.listBooks)
+
+router.use(upload.none(),(req, res) => {
+    if(!req.route) return res.send({msg: '404 NOT FOUND!'})
+})
+
 
 module.exports = router
