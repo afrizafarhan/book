@@ -7,6 +7,15 @@ const listBooks = async (req, res) => {
     res.send(data)
 }
 
+const detailBook = async (req, res) => {
+    const data = await Book.getDetailBook(req.body).then((res) => {
+        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
+
+        return res
+    })
+    res.send(data)
+}
+
 const addBook = async (req, res) => {
     const data = req.body
     data['book_img'] = req.file.filename
@@ -28,7 +37,20 @@ const updateBook = async (req, res) => {
     })
     res.send(response)
 }
+
+const deleteBook = async (req, res) => {
+    const response = await Book.deleteBook(req.body).then((res) => {
+        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
+
+        return res
+    })
+    res.send(response)
+}
+
 module.exports = {
     listBooks,
-    addBook
+    detailBook,
+    addBook,
+    updateBook, 
+    deleteBook
 }
