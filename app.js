@@ -1,6 +1,6 @@
-const { app, express,fs } = require('./core/module')
+const { app, express,fs } = require('./backend/core/module')
 //routes
-const catalogRouter = require('./routes/catalog')
+const catalogRouter = require('./backend/routes/catalog')
 
 const path = "./uploads"
 if(!fs.existsSync(path)) fs.mkdirSync('uploads')
