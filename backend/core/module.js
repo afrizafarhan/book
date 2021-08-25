@@ -8,6 +8,7 @@ const env = dotenv.config()
 const path = require('path')
 const {multer, diskStorage} = require('../helpers/UploadFileHelper')
 const upload = multer({storage: diskStorage})
+const cors = require('cors')
 
 module.exports = {
     app,
@@ -18,5 +19,6 @@ module.exports = {
     multer,
     path,
     router,
-    upload
+    upload,
+    cors
 }
