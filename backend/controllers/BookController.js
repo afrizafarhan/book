@@ -3,7 +3,11 @@ const Book = require("../models/Book")
 const {getTypeOfImage} = require("../helpers/UploadFileHelper")
 
 const listBooks = async (req, res) => {
-    const data = await Book.getListBooks()
+    const data = await Book.getListBooks().then(res => {
+        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
+
+        return res
+    })
     res.send(data)
 }
 

@@ -34,9 +34,7 @@ const updateBook = async(data) => {
     const query = `UPDATE ${tableName} SET book_title = '${book_title}', id_langguage = '${id_langguage}', id_author = '${id_author}', id_publisher = '${id_publisher}', total_page = '${total_page}', release_date = '${release_date}', price = '${price}', book_img = ${book_img} WHERE id = ${id}`
     return Con.query(query)
     .then(res => res.rowCount > 0 ? {msg: 'SUCCESS_ADD_BOOK'} : {msg: 'FAILED_ADD_BOOK'})
-    .catch(e => {
-        if(e) return new Error(e.message)
-    })
+    .catch(e => new Error(e.message))
 }
 
 const deleteBook = (data) => {

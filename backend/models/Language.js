@@ -5,7 +5,7 @@ const getListLangguages = () => {
     return Con
         .query(`SELECT * FROM ${tableName}`)
         .then(res => res.rows)
-        .catch(e => e.stack)
+        .catch(e => new Error(e.message))
 }
 
 const getDetailLangguage = (data) => {
@@ -13,7 +13,7 @@ const getDetailLangguage = (data) => {
     return Con
         .query(`SELECT * FROM ${tableName} WHERE id = $1`, [id])
         .then(res => res.rows)
-        .catch(e => e.stack)
+        .catch(e => new Error(e.message))
 }
 
 const addLangguage = (data) => {
@@ -21,7 +21,7 @@ const addLangguage = (data) => {
     return Con
         .query(`INSERT INTO ${tableName}(name) VALUES($1)`, [name])
         .then(res => res.rowCount > 0 ? { msg: 'SUCCESS_ADD_LANGGUAGE' } : { msg: 'FAILED_ADD_LANGGUAGE' })
-        .catch(e => e.stack)
+        .catch(e => new Error(e.message))
 }
 
 const updateLangguage = (data) => {

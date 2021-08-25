@@ -8,14 +8,14 @@ const getListAuthors = () => {
         .then((results) => {
             return results.rows
         })
-        .catch(e => e.stack)
+        .catch(e => new Error(e.message))
 }
 
 const getDetailAuthor = (data) => {
     const { id } = data
     return Con.query(`SELECT * FROM ${tableName} WHERE id = $1`, [id])
         .then(res => res.rows)
-        .catch(e => e.stack)
+        .catch(e => new Error(e.message))
 }
 
 const addAuthor = async (data) => {
@@ -27,7 +27,7 @@ const addAuthor = async (data) => {
 
     return Con.query(`INSERT INTO ${tableName}(name, email,status) VALUES ($1, $2,1)`, [name, email])
         .then(res => res.rowCount > 0 ? { status: 200 } : { status: 404 })
-        .catch(e => e.stack)
+        .catch(e => new Error(e.message))
 }
 
 const updateAuthor = async (data) => {
@@ -40,7 +40,7 @@ const updateAuthor = async (data) => {
 
     return Con.query(`UPDATE ${tableName} SET name = $1, email = $2 WHERE id = $3`, [name, email, id])
         .then(res => res.rowCount > 0 ? { status: 'UPDATE_AUTHOR_SUCCESS' } : { status: 'UPDATE_AUTHOR_FAILED' })
-        .catch(e => e.stack)
+        .catch(e => new Error(e.message))
 }
 
 const nonActiveAuthorData = (data) => {
@@ -48,7 +48,7 @@ const nonActiveAuthorData = (data) => {
     return Con
         .query(`UPDATE ${tableName} SET status = 0 WHERE id = $1`, [id])
         .then(res => res.rowCount > 0 ? { msg: 'STATUS_SUCCESS_UPDATE' } : { msg: 'STATUS_FAILED_UPDATE' })
-        .catch(e => e.stack)
+        .catch(e => new Error(e.message))
 }
 
 module.exports = {
