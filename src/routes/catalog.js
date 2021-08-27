@@ -13,6 +13,7 @@ router.post('/author', upload.none(), authorController.addAuthor)
 router.post('/detailauthor', upload.none(), authorController.detailAuthor)
 router.put('/authorupdate', upload.none(), authorController.updateAuthor)
 router.put('/author', upload.none(), authorController.updateStatusAuthor)
+router.delete('/author', upload.none(), authorController.deleteAuthor)
 router.get('/authors', authorController.authorsList)
 
 /// LANGUAGE ROUTES ///

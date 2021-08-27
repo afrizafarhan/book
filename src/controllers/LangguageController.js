@@ -1,5 +1,5 @@
-const Langguages = require('./../models/Language')
-const { json } = require('./../core/module')
+const Langguages = require('../models/Language')
+const { json } = require('../core/module')
 
 
 const langgugesList = async (_, res) => {

@@ -1,5 +1,5 @@
-const { json } = require('./../core/module')
-const Author = require('./../models/Author')
+const { json } = require('../core/module')
+const Author = require('../models/Author')
 
 const authorsList = async (_, res) => {
     const data = await Author.getListAuthors().then(res => {
@@ -46,10 +46,16 @@ const updateStatusAuthor = async (req, res) => {
     res.send(data)
 }
 
+const deleteAuthor = async(req, res) => {
+    console.log(req)
+    res.send('Berhasil')
+}
+
 module.exports = {
     authorsList,
     addAuthor,
     updateAuthor,
     detailAuthor,
-    updateStatusAuthor
+    updateStatusAuthor, 
+    deleteAuthor
 }

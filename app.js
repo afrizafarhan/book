@@ -1,10 +1,11 @@
-const { app, express, fs, cors } = require('./backend/core/module')
+const { app, express, fs, cors } = require('./src/core/module')
 //routes
-const catalogRouter = require('./backend/routes/catalog')
+const catalogRouter = require('./src/routes/catalog')
 
 const path = "./uploads"
 if (!fs.existsSync(path)) fs.mkdirSync('uploads')
 
+app.use(express.json())
 app.use(cors())
 app.use('/', catalogRouter)
 
