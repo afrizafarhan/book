@@ -20,6 +20,7 @@ const detailAuthor = async (req, res) => {
 }
 
 const addAuthor = async (req, res) => {
+    console.log(req.body)
     const data = await Author.addAuthor(req.body).then(res => {
         if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
 
@@ -29,6 +30,7 @@ const addAuthor = async (req, res) => {
 }
 
 const updateAuthor = async (req, res) => {
+    console.log(req.body)
     const data = await Author.updateAuthor(req.body).then(res => {
         if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
 
@@ -47,8 +49,12 @@ const updateStatusAuthor = async (req, res) => {
 }
 
 const deleteAuthor = async(req, res) => {
-    console.log(req)
-    res.send('Berhasil')
+    const response = await Author.deleteAuthor(req.body).then(res => {
+        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
+
+        return res
+    })
+    res.send(response)
 }
 
 module.exports = {
