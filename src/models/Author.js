@@ -37,8 +37,8 @@ const updateAuthor = async (data) => {
 
     if (checkEmail)
         return { msg: 'EMAIL_USED' }
-
-    return Con.query(`UPDATE ${tableName} SET name = $1, email = $2 WHERE id = $3`, [name, email, id])
+    
+        return Con.query(`UPDATE ${tableName} SET name = $1, email = $2 WHERE id = $3`, [name, email, id])
         .then(res => res.rowCount > 0 ? { status: 'UPDATE_AUTHOR_SUCCESS' } : { status: 'UPDATE_AUTHOR_FAILED' })
         .catch(e => new Error(e.message))
 }
@@ -51,10 +51,19 @@ const nonActiveAuthorData = (data) => {
         .catch(e => new Error(e.message))
 }
 
+const deleteAuthor = (data) => {
+    const {id} = data
+    return Con
+        .query(`DELETE FROM ${tableName} WHERE id = $1`, [id])
+        .then(res => res.rowCount > 0 ? { msg: 'STATUS_SUCCESS_UPDATE' } : { msg: 'STATUS_FAILED_UPDATE' })
+        .catch(e => new Error(e.message))
+}
+
 module.exports = {
     getListAuthors,
     getDetailAuthor,
     addAuthor,
     updateAuthor,
-    nonActiveAuthorData
+    nonActiveAuthorData,
+    deleteAuthor
 }
