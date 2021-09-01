@@ -1,7 +1,7 @@
 const { router, upload, multer } = require("../core/module");
 
 const authorController = require('../controllers/AuthorController')
-const langguagesController = require('../controllers/LangguageController')
+const languagesController = require('../controllers/LanguageController')
 const publisherController = require('../controllers/PublisherController')
 const bookController = require('../controllers/BookController')
 const categoryController = require('../controllers/CategoryController')
@@ -17,11 +17,11 @@ router.delete('/author', upload.none(), authorController.deleteAuthor)
 router.get('/authors', authorController.authorsList)
 
 /// LANGUAGE ROUTES ///
-router.post('/langguage', upload.none(), langguagesController.addLangguage)
-router.post('/detaillangguage', upload.none(), langguagesController.detailLangguage)
-router.put('/langguage', upload.none(), langguagesController.updateLangguage)
-router.delete('/langguage', upload.none(), langguagesController.deleteLangguage)
-router.get('/langguages', langguagesController.langgugesList)
+router.post('/language', upload.none(), languagesController.addLanguage)
+router.post('/detaillanguage', upload.none(), languagesController.detailLanguage)
+router.put('/language', upload.none(), languagesController.updateLanguage)
+router.delete('/language', upload.none(), languagesController.deleteLanguage)
+router.get('/languages', languagesController.languagesList)
 
 /// PUBLISHER ROUTES ///
 router.post('/publisher', upload.none(), publisherController.addPublisher)
