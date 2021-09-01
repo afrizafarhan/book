@@ -1,47 +1,69 @@
 const { Con } = require("../core/connection");
-const tableName = 'langguages'
+const tableName = 'languages'
 
-const getListLangguages = () => {
-    return Con
-        .query(`SELECT * FROM ${tableName}`)
-        .then(res => res.rows)
-        .catch(e => new Error(e.message))
+const getListLanguages = async() => {
+    try{
+        const response = await Con.query(`SELECT * FROM ${tableName}`).then(res => res.rows).catch(e => new Error("INTERNAL_SERVER_ERROR"))
+        return response
+    }catch(e){
+        return new Error("INTERNAL_SERVER_ERROR")
+    }
 }
 
-const getDetailLangguage = (data) => {
-    const { id } = data
-    return Con
-        .query(`SELECT * FROM ${tableName} WHERE id = $1`, [id])
-        .then(res => res.rows)
-        .catch(e => new Error(e.message))
+const getDetailLanguage = async(data) => {
+    try{
+        const { id } = data
+        const response = await Con
+            .query(`SELECT * FROM ${tableName} WHERE id = $1`, [id])
+            .then(res => res.rows)
+            .catch(e => new Error("INTERNAL_SERVER_ERROR"))
+        return response
+    }catch(e){
+        return new Error("INTERNAL_SERVER_ERROR")
+    }
 }
 
-const addLangguage = (data) => {
-    const { name } = data
-    return Con
-        .query(`INSERT INTO ${tableName}(name) VALUES($1)`, [name])
-        .then(res => res.rowCount > 0 ? { msg: 'SUCCESS_ADD_LANGGUAGE' } : { msg: 'FAILED_ADD_LANGGUAGE' })
-        .catch(e => new Error(e.message))
+const addLanguage = async(data) => {
+    try{
+        const { name } = data
+        const response = await Con
+            .query(`INSERT INTO ${tableName}(name) VALUES($1)`, [name])
+            .then(res => res.rowCount > 0 ? { msg: 'SUCCESS_ADD_LANGUAGE' } : { msg: 'FAILED_ADD_LANGUAGE' })
+            .catch(e => new Error("INTERNAL_SERVER_ERROR"))
+        return response
+    }catch(e){
+        return new Error("INTERNAL_SERVER_ERROR")
+    }
 }
 
-const updateLangguage = (data) => {
-    const { id, name } = data
-    return Con
-        .query(`UPDATE ${tableName} SET name = $1 WHERE id = $2`, [id, name])
-        .then(res => res.rowCount > 0 ? { msg: 'SUCCESS_UPDATE_LANGGUAGE' } : { msg: 'FAILED_UPDATE_LANGGUAGE' })
+const updateLanguage = async(data) => {
+    try{
+        const { id, name } = data
+        const response = await Con
+            .query(`UPDATE ${tableName} SET name = $2 WHERE id = $1`, [id, name])
+            .then(res => res.rowCount > 0 ? { msg: 'SUCCESS_UPDATE_LANGUAGE' } : { msg: 'FAILED_UPDATE_LANGUAGE' })
+        return response
+    }catch(e){
+        return new Error("INTERNAL_SERVER_ERROR")
+    }
 }
 
-const deleteLangguage = (data) => {
-    const { id } = data
-    return Con
-        .query(`DELETE FROM ${tableName} WHERE id = $1`, [id])
-        .then(res => res.rowCount > 0 ? { msg: 'SUCCESS_DELETE_LANGGUAGE' } : { msg: 'FAILED_DELETE_LANGGUAGE' })
+const deleteLanguage = async (data) => {
+    try{
+        const { id } = data
+        const response = await Con
+            .query(`DELETE FROM ${tableName} WHERE id = $1`, [id])
+            .then(res => res.rowCount > 0 ? { msg: 'SUCCESS_DELETE_LANGUAGE' } : { msg: 'FAILED_DELETE_LANGUAGE' })
+        return response
+    }catch(e){
+        return new Error("INTERNAL_SERVER_ERROR")
+    }
 }
 
 module.exports = {
-    getListLangguages,
-    getDetailLangguage,
-    addLangguage,
-    updateLangguage,
-    deleteLangguage
+    getListLanguages,
+    getDetailLanguage,
+    addLanguage,
+    updateLanguage,
+    deleteLanguage
 }
