@@ -21,8 +21,8 @@ const addCategory = (req) => {
 
 const updateCategory = (req) => {
     const {id,name} = req
-    const query = `UPDATE ${tableName} SET name = $1 WHERE id = $1`
-    return Con.query(query, [id]).then(res => res.rows).catch(err => new Error(e.message))
+    const query = `UPDATE ${tableName} SET name = $1 WHERE id = $2`
+    return Con.query(query, [name, id]).then(res => res.rows).catch(err => new Error(e.message))
 }
 
 const deleteCategory = (req) => {
