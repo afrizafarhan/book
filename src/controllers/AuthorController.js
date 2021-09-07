@@ -1,60 +1,46 @@
 const { json } = require('../core/module')
 const Author = require('../models/Author')
 
-const authorsList = async (_, res) => {
-    const data = await Author.getListAuthors().then(res => {
-        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
-
-        return res
+const authorsList = (_, res) => {
+    Author.getListAuthors().then(response => {
+        if (res instanceof Error) res.status(500).send(res.message)
+        res.send(response.rows)
     })
-    res.status(200).json(data)
 }
 
-const detailAuthor = async (req, res) => {
-    const data = await Author.getDetailAuthor(req.body).then(res => {
-        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
-
-        return res
+const detailAuthor = (req, response) => {
+    Author.getDetailAuthor(req.body).then(res => {
+        if (res instanceof Error) response.status(500).send({ msg: 'INTERNAL_SERVER_ERROR' })
+        response.send(res.rows)
     })
-    res.status(200).json(data)
 }
 
-const addAuthor = async (req, res) => {
-    console.log(req.body)
-    const data = await Author.addAuthor(req.body).then(res => {
-        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
-
-        return res
+const addAuthor = (req, response) => {
+    Author.addAuthor(req.body).then(res => {
+        if (res instanceof Error) response.status(500).send({ msg: 'INTERNAL_SERVER_ERROR' })
+        response.send(res.rowCount > 0 ? { msg: 'SUCCESS_ADD_AUTHOR' } : { msg: 'FAILED_ADD_AUTHOR' })
     })
-    res.send(data)
 }
 
-const updateAuthor = async (req, res) => {
-    console.log(req.body)
-    const data = await Author.updateAuthor(req.body).then(res => {
-        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
-
-        return res
+const updateAuthor = (req, response) => {
+    Author.updateAuthor(req.body).then(res => {
+        if (res instanceof Error) response.status(500).send({ msg: 'INTERNAL_SERVER_ERROR' })
+        response.send(res.rowCount > 0 ? { msg: 'SUCCESS_UPDATE_AUTHOR' } : { msg: 'FAILED_UPDATE_AUTHOR' })
     })
-    res.send(data)
 }
 
-const updateStatusAuthor = async (req, res) => {
-    const data = await Author.nonActiveAuthorData(req.body).then(res => {
-        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
-
-        return res
+const updateStatusAuthor = (req, response) => {
+    Author.nonActiveAuthorData(req.body).then(res => {
+        if (res instanceof Error) response.status(500).send({ msg: 'INTERNAL_SERVER_ERROR' })
+        response.send(res.rowCount > 0 ? { msg: 'SUCCESS_UPDATE_STATUS_AUTHOR' } : { msg: 'FAILED_UPDATE_STATUS_AUTHOR' })
     })
-    res.send(data)
 }
 
-const deleteAuthor = async(req, res) => {
-    const response = await Author.deleteAuthor(req.body).then(res => {
-        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
-
-        return res
+const deleteAuthor = (req, response) => {
+    Author.deleteAuthor(req.body).then(res => {
+        if (res instanceof Error) response.status(500).send({ msg: 'INTERNAL_SERVER_ERROR' })
+        response.send(res.rowCount > 0 ? { msg: 'SUCCESS_DELETE_AUTHOR' } : { msg: 'FAILED_DELETE_AUTHOR' })
     })
-    res.send(response)
 }
 
 module.exports = {
@@ -62,6 +48,6 @@ module.exports = {
     addAuthor,
     updateAuthor,
     detailAuthor,
-    updateStatusAuthor, 
+    updateStatusAuthor,
     deleteAuthor
 }

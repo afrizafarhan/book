@@ -2,53 +2,48 @@ const { router } = require("../core/module");
 const Book = require("../models/Book")
 const {getTypeOfImage} = require("../helpers/UploadFileHelper")
 
-const listBooks = async (req, res) => {
-    const data = await Book.getListBooks().then(res => {
-        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
-
-        return res
-    })
-    res.send(data)
-}
-
-const detailBook = async (req, res) => {
-    const data = await Book.getDetailBook(req.body).then((res) => {
-        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
-
-        return res
-    })
-    res.send(data)
-}
-
-const addBook = async (req, res) => {
-    const data = req.body
-    data['book_img'] = req.file.filename
-    const response = await Book.addBook(data).then(res => {
-        if(res instanceof Error)  return {msg: 'INTERNAL SERVER ERROR!'}
+const listBooks = (req, res) => {
+    Book.getListBooks().then(response => {
+        if(response instanceof Error) res.status(500).send({ msg: 'INTERNAL SERVER ERROR'})
         
-        return res
+        res.send(response.rows)
     })
-    res.send(response)
 }
 
-const updateBook = async (req, res) => {
+const detailBook = (req, res) => {
+    Book.getDetailBook(req.body).then((response) => {
+        if(response instanceof Error) res.status(500).send({ msg: 'INTERNAL SERVER ERROR'})
+        
+        res.send(response.rows)
+    })
+}
+
+const addBook = (req, res) => {
     const data = req.body
     data['book_img'] = req.file.filename
-    const response = await Book.updateBook(data).then(res => {
-        if(res instanceof Error) return {msg: 'INTERNAL SERVER ERROR!'}
-
-        return res
+    Book.addBook(data).then(response => {
+        if(response instanceof Error)  res.status(500).send({msg: 'INTERNAL SERVER ERROR!'})
+        
+        res.send(response.rowCount > 0 ? { msg: 'SUCCESS_ADD_BOOK' } : { msg: 'FAILED_ADD_BOOK' })
     })
-    res.send(response)
 }
 
-const deleteBook = async (req, res) => {
-    const response = await Book.deleteBook(req.body).then((res) => {
-        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
+const updateBook = (req, res) => {
+    const data = req.body
+    data['book_img'] = req.file.filename
+    Book.updateBook(data).then(response => {
+        if(response instanceof Error) res.status(500).send({msg: 'INTERNAL SERVER ERROR!'})
 
-        return res
+        res.send(response.rowCount > 0 ? { msg: 'SUCCESS_UPDATE_BOOK' } : { msg: 'FAILED_UPDATE_BOOK' })
     })
-    res.send(response)
+}
+
+const deleteBook = (req, res) => {
+    Book.deleteBook(req.body).then((response) => {
+        if(response instanceof Error) res.status(500).send({ msg: 'INTERNAL SERVER ERROR'})
+
+        res.send(response.rowCount > 0 ? { msg: 'SUCCESS_DELETE_BOOK' } : { msg: 'FAILED_DELETE_BOOK' })
+    })
 }
 
 module.exports = {

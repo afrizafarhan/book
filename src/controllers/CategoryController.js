@@ -1,48 +1,38 @@
 const Category = require('../models/Category')
 
-const getListCategories = async(req, res) => {
-    const data = await Category.getListCategories().then((res) =>{
-        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
-
-        return res
+const getListCategories = (req, res) => {
+    Category.getListCategories().then((response) => {
+        if (res instanceof Error) res.status(500).send(res.message)
+        return res.send(response.rows)
     })
-    res.send(data)
 }
 
-const getDetailCategory = async (req, res) => {
-    const data = await Category.getDetailCategory().then((res) => {
-        if(res instanceof Error) return {msg: 'INTERNAL SERVER ERROR'}
-
-        return res
+const getDetailCategory = (req, response) => {
+    Category.getDetailCategory().then((res) => {
+        if (res instanceof Error) response.status(500).send({ msg: 'INTERNAL_SERVER_ERROR' })
+        response.send(res.rows)
     })
-    res.send(data)
 }
 
-const addCategory = async (req, res) => {
-    const response = await Category.addCategory(req.body).then((res) => {
-        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
-
-        return res
+const addCategory = (req, response) => {
+    Category.addCategory(req.body).then((res) => {
+        if (res instanceof Error) response.status(500).send({ msg: 'INTERNAL_SERVER_ERROR' })
+        response.send(res.rowCount > 0 ? { msg: 'SUCCESS_ADD_CATEGORY' } : { msg: 'FAILED_ADD_CATEGORY' })
     })
-    res.send(response)
 }
 
-const updateCategory = async (req, res) => {
-    const response = await Category.updateCategory(req.body).then((res) => {
-        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
-
-        return res
+const updateCategory = (req, response) => {
+    Category.updateCategory(req.body).then((res) => {
+        if (res instanceof Error) response.status(500).send({ msg: 'INTERNAL_SERVER_ERROR' })
+        response.send(res.rowCount > 0 ? {msg: 'SUCCESS_UPDATE_CATEGORY'} : { msg: 'FAILED_UPDATE_CATEGORY'})
     })
-    res.send(response)
 }
 
-const deleteCategory = async (req, res) => {
-    const response = await Category.deleteCategory(req.body).then((res) => {
-        if(res instanceof Error) return { msg: 'INTERNAL SERVER ERROR'}
-
-        return res
+const deleteCategory = (req, response) => {
+    Category.deleteCategory(req.body).then((res) => {
+        if (res instanceof Error) response.status(500).send({ msg: 'INTERNAL_SERVER_ERROR' })
+        response.send(res.rowCount > 0 ? {msg: 'SUCCESS_DELETE_CATEGORY'} : { msg: 'FAILED_DELETE_CATEGORY'})
     })
-    res.send(response)
 }
 
 module.exports = {
