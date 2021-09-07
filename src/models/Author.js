@@ -3,60 +3,74 @@ const { checkEmailIfExist } = require('../helpers/EmailHelper')
 const tableName = 'author'
 
 
-const getListAuthors = () => {
-    return Con.query(`SELECT * FROM ${tableName}`)
-        .then((results) => {
-            return results.rows
-        })
-        .catch(e => new Error(e.message))
+const getListAuthors = async() => {
+    try{
+        const exec = await Con.query(`SELECT * FROM ${tableName}`)
+        return exec
+    }catch(e){
+        return new Error("INTERNAL_SERVER_ERROR")
+    }
 }
 
-const getDetailAuthor = (data) => {
+const getDetailAuthor = async(data) => {
+    try{
+        const exec = await Con.query(`SELECT * FROM ${tableName} WHERE id = $1`, [id])
+        return exec
+    }catch(e){
+        return new Error("INTERNAL_SERVER_ERROR")
+    }
     const { id } = data
-    return Con.query(`SELECT * FROM ${tableName} WHERE id = $1`, [id])
-        .then(res => res.rows)
-        .catch(e => new Error(e.message))
 }
 
 const addAuthor = async (data) => {
-    const { name, email } = data
-    const checkEmail = await checkEmailIfExist(email, tableName)
-
-    if (checkEmail)
-        return { msg: 'EMAIL_USED' }
-
-    return Con.query(`INSERT INTO ${tableName}(name, email,status) VALUES ($1, $2,1)`, [name, email])
-        .then(res => res.rowCount > 0 ? { status: 200 } : { status: 404 })
-        .catch(e => new Error(e.message))
+    try{
+        const { name, email } = data
+        const checkEmail = await checkEmailIfExist(email, tableName)
+    
+        if (checkEmail)
+            return { msg: 'EMAIL_USED' }
+    
+        const exec = await Con.query(`INSERT INTO ${tableName}(name, email,status) VALUES ($1, $2,1)`, [name, email])
+        return exec
+    }catch(e){
+        return new Error("INTERNAL_SERVER_ERROR")
+    }
 }
 
 const updateAuthor = async (data) => {
-    const { id, name, email } = data
-
-    const checkEmail = await checkEmailIfExist(email, tableName)
-
-    if (checkEmail)
-        return { msg: 'EMAIL_USED' }
+    try{
+        const { id, name, email } = data
     
-        return Con.query(`UPDATE ${tableName} SET name = $1, email = $2 WHERE id = $3`, [name, email, id])
-        .then(res => res.rowCount > 0 ? { status: 'UPDATE_AUTHOR_SUCCESS' } : { status: 'UPDATE_AUTHOR_FAILED' })
-        .catch(e => new Error(e.message))
+        const checkEmail = await checkEmailIfExist(email, tableName)
+    
+        if (checkEmail)
+            return { msg: 'EMAIL_USED' }
+        
+        const exec = await Con.query(`UPDATE ${tableName} SET name = $1, email = $2 WHERE id = $3`, [name, email, id])
+        return exec
+    }catch(e){
+        return new Error("INTERNAL_SERVER_ERROR")
+    }
 }
 
-const nonActiveAuthorData = (data) => {
-    const { id } = data
-    return Con
-        .query(`UPDATE ${tableName} SET status = 0 WHERE id = $1`, [id])
-        .then(res => res.rowCount > 0 ? { msg: 'STATUS_SUCCESS_UPDATE' } : { msg: 'STATUS_FAILED_UPDATE' })
-        .catch(e => new Error(e.message))
+const nonActiveAuthorData = async(data) => {
+    try{
+        const { id } = data
+        const exec = await Con.query(`UPDATE ${tableName} SET status = 0 WHERE id = $1`, [id])
+        return exec
+    }catch(e){
+        return new Error("INTERNAL_SERVER_ERROR")
+    }
 }
 
-const deleteAuthor = (data) => {
-    const {id} = data
-    return Con
-        .query(`DELETE FROM ${tableName} WHERE id = $1`, [id])
-        .then(res => res.rowCount > 0 ? { msg: 'STATUS_SUCCESS_UPDATE' } : { msg: 'STATUS_FAILED_UPDATE' })
-        .catch(e => new Error(e.message))
+const deleteAuthor = async(data) => {
+    try{
+        const {id} = data
+        const exec = await Con.query(`DELETE FROM ${tableName} WHERE id = $1`, [id])
+        return exec
+    }catch(e){
+        return new Error("INTERNAL_SERVER_ERROR")
+    }
 }
 
 module.exports = {
